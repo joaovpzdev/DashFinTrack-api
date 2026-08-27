@@ -5,16 +5,14 @@ import { PostgresCreateUserRepository } from '../repositories/postgres/create-us
 export class CreateUserUseCase {
     async execute(createUserParams){
         //gerar ID 
-        const userID = uuidv4();
+        const userId = uuidv4();
         //criptografar senha
         const hashedPassword = await bcrypt.hash(createUserParams.password, 10)
         //inserir usuario no postgres
         const user = {
-            first_name: createUserParams.first_name,
-            last_name: createUserParams.last_name,
-            email: createUserParams.email,
-            id: userID,
-            password: hashedPassword
+            ...createUserParams,
+            id: userId,
+            password: hashedPassword,
         }
         //chamar o repositório do Postgres para criar o usuário
         const postgresCreateUserRepository = new PostgresCreateUserRepository()
