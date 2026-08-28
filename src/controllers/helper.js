@@ -1,6 +1,6 @@
-export const badRequest = (body) => {
+export const ok = (body) => {
   return {
-    statusCode: 400,
+    statusCode: 200,
     body,
   }
 }
@@ -12,16 +12,23 @@ export const created = (body) => {
   }
 }
 
-export const serverError = (body) => {
+export const badRequest = (body) => {
   return {
-    statusCode: 500,
+    statusCode: 400,
     body,
   }
 }
 
-export const ok = (body) => {
+export const userNotFound = (body) => {
   return {
-    statusCode: 200,
+    statusCode: 404,
+    body,
+  }
+}
+
+export const serverError = (body) => {
+  return {
+    statusCode: 500,
     body,
   }
 }
