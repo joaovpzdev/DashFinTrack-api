@@ -34,7 +34,7 @@ export class UpdateUserController {
       if (params.email) {
         const emailIsValid = checkIfEmailIsValid(params.email)
         if (!emailIsValid) {
-          return generateInvalidEmailResponse(params.email)
+          return generateInvalidEmailResponse()
         }
       }
       const updateUserUseCase = new UpdateUserUseCase()
