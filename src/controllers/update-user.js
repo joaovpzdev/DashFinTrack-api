@@ -1,14 +1,15 @@
 import { badRequest, ok } from './helpers/http.js'
-import { generateInvalidPasswordResponse, generateInvalidEmailResponse, generateInvalidIdResponse, checkIfPasswordIsValid, checkIfEmailIsValid } from './helpers/user.js'
+import { generateInvalidPasswordResponse, generateInvalidEmailResponse, generateInvalidIdResponse, checkIfPasswordIsValid, checkIfEmailIsValid, checkIfIdIsValid  } from './helpers/user.js'
 import { UpdateUserUseCase } from '../use-cases/update-user.js'
-import validator from 'validator'
+
 
 export class UpdateUserController {
   async execute(httpRequest) {
     try {
       const userId = httpRequest.params.id
 
-      const isIdValid = validator.isUUID(userId)
+      const isIdValid = checkIfIdIsValid(userId)
+
       if (!isIdValid) {
         return generateInvalidIdResponse()
       }
