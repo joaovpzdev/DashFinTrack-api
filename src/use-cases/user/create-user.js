@@ -1,6 +1,6 @@
 import { v4 as uuidv4 } from 'uuid'
 import bcrypt from 'bcrypt'
-import { EmailAlreadyExistsError } from '../errors/user.js'
+import { EmailAlreadyExistsError } from '../../errors/user.js'
 
 export class CreateUserUseCase {
   constructor(createUserRepository, getUserByEmailRepository) {
@@ -8,8 +8,9 @@ export class CreateUserUseCase {
     this.getUserByEmailRepository = getUserByEmailRepository
   }
   async execute(createUserParams) {
-    const userWithProvidedEmail =
-      await this.getUserByEmailRepository.execute(createUserParams.email)
+    const userWithProvidedEmail = await this.getUserByEmailRepository.execute(
+      createUserParams.email,
+    )
 
     if (userWithProvidedEmail) {
       throw new EmailAlreadyExistsError(createUserParams.email)

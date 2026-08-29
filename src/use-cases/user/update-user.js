@@ -1,5 +1,5 @@
 import bcrypt from 'bcrypt'
-import { EmailAlreadyExistsError } from '../errors/user.js'
+import { EmailAlreadyExistsError } from '../../errors/user.js'
 
 export class UpdateUserUseCase {
   constructor(PostgresGetUserByEmailRepository, PostgresUpdateUserRepository) {
