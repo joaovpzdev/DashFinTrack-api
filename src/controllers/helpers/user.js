@@ -1,4 +1,4 @@
-import { badRequest } from '../helpers/http.js'
+import { badRequest, userNotFound } from '../helpers/http.js'
 import validator from 'validator'
 
 export const generateInvalidPasswordResponse = () =>{
@@ -25,3 +25,5 @@ export const checkIfPasswordIsValid = (password) => password.length >= 6
 export const checkIfEmailIsValid = (email) => validator.isEmail(email)
 
 export const checkIfIdIsValid = (id) => validator.isUUID(id)
+
+export const userNotFoundResponse = () => userNotFound({message: 'User not found'})
