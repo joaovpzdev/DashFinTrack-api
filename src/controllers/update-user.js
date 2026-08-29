@@ -1,12 +1,20 @@
 import { badRequest, ok } from './helpers/http.js'
-import { generateInvalidPasswordResponse, generateInvalidEmailResponse, generateInvalidIdResponse, checkIfPasswordIsValid, checkIfEmailIsValid, checkIfIdIsValid  } from './helpers/user.js'
-import { UpdateUserUseCase } from '../use-cases/update-user.js'
-
+import {
+  generateInvalidPasswordResponse,
+  generateInvalidEmailResponse,
+  generateInvalidIdResponse,
+  checkIfPasswordIsValid,
+  checkIfEmailIsValid,
+  checkIfIdIsValid,
+} from './helpers/user.js'
 
 export class UpdateUserController {
+  constructor(updateUserUseCase) {
+    this.updateUserUseCase = updateUserUseCase
+  }
   async execute(httpRequest) {
     try {
-      const userId = httpRequest.params.id
+      const userId = httpRequest.params.userId
 
       const isIdValid = checkIfIdIsValid(userId)
 
@@ -37,10 +45,8 @@ export class UpdateUserController {
           return generateInvalidEmailResponse()
         }
       }
-      const updateUserUseCase = new UpdateUserUseCase()
+      const updatedUser = await this.updateUserUseCase.execute(userId, params)
 
-      const updatedUser = await updateUserUseCase.execute(userId, params)
-      
       return ok(updatedUser)
     } catch (error) {
       console.log(error)
