@@ -2,12 +2,14 @@ import { badRequest, ok } from '../helpers/http.js'
 import {
   generateInvalidPasswordResponse,
   generateInvalidEmailResponse,
-  generateInvalidIdResponse,
   userNotFoundResponse,
   checkIfPasswordIsValid,
   checkIfEmailIsValid,
-  checkIfIdIsValid,
 } from '../helpers/user.js'
+import {
+  checkIfIdIsValid,
+  generateInvalidIdResponse,
+} from '../helpers/validation.js'
 
 export class UpdateUserController {
   constructor(updateUserUseCase) {
