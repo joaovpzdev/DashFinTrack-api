@@ -7,11 +7,11 @@ export class CreateTransactionUseCase {
         this.getUserByIdRepository = getUserByIdRepository
     }
     async execute(createTransactionParams) {
-        const userId = createTransactionParams.userId
-        const user = await this.getUserByIdRepository.execute(userId)
+        const user_id = createTransactionParams.user_id
+        const user = await this.getUserByIdRepository.execute(user_id)
 
         if (!user) {
-            throw new UserNotFoundError(userId)
+            throw new UserNotFoundError(user_id)
         }
 
         const transactionId = uuidv4()
