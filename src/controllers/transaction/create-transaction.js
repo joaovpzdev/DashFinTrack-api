@@ -1,10 +1,12 @@
 import { badRequest, serverError, created } from '../helpers/http.js'
+import { checkIfAmountIsValid, checkIfTypeIsValid, invalidAmountResponse, invalidTypeResponse } from '../helpers/transaction.js'
 import {
   checkIfIdIsValid,
   generateInvalidIdResponse,
   validateRequiredFields,
+  requiredFieldIsMissingResponse,
 } from '../helpers/validation.js'
-import validator from 'validator'
+
 
 export class CreateTransactionController {
   constructor(createTransactionUseCase) {
@@ -20,9 +22,7 @@ export class CreateTransactionController {
        const { ok: someRequiredfieldWasProvided, missingField } = validateRequiredFields(params, requiredFields)
 
        if (!someRequiredfieldWasProvided) {
-         return badRequest({
-           message: `Missing param: ${missingField}`,
-         })
+         return requiredFieldIsMissingResponse(missingField)
        }
 
      
@@ -40,32 +40,18 @@ export class CreateTransactionController {
         return generateInvalidIdResponse()
       }
 
-      if (params.amount <= 0) {
-        return badRequest({
-          message: 'Amount must be greater than zero',
-        })
-      }
-
-      const amountIsValid = validator.isCurrency(params.amount.toString(), {
-        digits_after_decimal: [2],
-        allow_negatives: false,
-        decimal_separator: '.',
-      })
+      const amountIsValid = checkIfAmountIsValid(params.amount)
 
       if (!amountIsValid) {
-        return badRequest({
-          message: 'Invalid amount format',
-        })
+        return invalidAmountResponse()
       }
 
       const type = params.type.trim().toUpperCase()
 
-      const typeIsValid = ['EARNING', 'EXPENSE', 'INVESTMENT'].includes(type)
+      const typeIsValid = checkIfTypeIsValid(type)
 
       if (!typeIsValid) {
-        return badRequest({
-          message: 'Invalid type',
-        })
+        return invalidTypeResponse()
       }
 
       const transaction = await this.createTransactionUseCase.execute({

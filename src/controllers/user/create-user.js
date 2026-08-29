@@ -6,7 +6,7 @@ import {
   generateInvalidPasswordResponse,
   checkIfEmailIsValid,
 } from '../helpers/user.js'
-import { validateRequiredFields } from '../helpers/validation.js'
+import { validateRequiredFields, requiredFieldIsMissingResponse } from '../helpers/validation.js'
 
 export class CreateUserController {
   constructor(createUserUseCase) {
@@ -21,7 +21,7 @@ export class CreateUserController {
       const { ok: someRequiredfieldWasProvided, missingField } = validateRequiredFields(params, requiredFields)
 
       if (!someRequiredfieldWasProvided) {
-        return badRequest({ message: `Missing required field: ${missingField}` })
+        return requiredFieldIsMissingResponse(missingField)
       }
       for (const field of requiredFields) {
         if (!params[field] || params[field].trim().length === 0) {
