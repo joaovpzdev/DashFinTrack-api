@@ -1,7 +1,11 @@
-
-import { badRequest, created, serverError  } from './helpers/http.js'
-import { EmailAlreadyExistsError } from '../errors/user.js'
-import { checkIfPasswordIsValid, generateInvalidEmailResponse, generateInvalidPasswordResponse, checkIfEmailIsValid } from './helpers/user.js'
+import { badRequest, created, serverError } from '../helpers/http.js'
+import { EmailAlreadyExistsError } from '../../errors/user.js'
+import {
+  checkIfPasswordIsValid,
+  generateInvalidEmailResponse,
+  generateInvalidPasswordResponse,
+  checkIfEmailIsValid,
+} from '../helpers/user.js'
 
 export class CreateUserController {
   constructor(createUserUseCase) {
@@ -14,7 +18,7 @@ export class CreateUserController {
       const requiredFields = ['first_name', 'last_name', 'email', 'password']
       for (const field of requiredFields) {
         if (!params[field] || params[field].trim().length === 0) {
-          return badRequest({message: `Missing required field: ${field}`})
+          return badRequest({ message: `Missing required field: ${field}` })
         }
       }
 
@@ -35,10 +39,10 @@ export class CreateUserController {
       return created(createdUser)
     } catch (error) {
       if (error instanceof EmailAlreadyExistsError) {
-        return badRequest({message: error.message})
+        return badRequest({ message: error.message })
       }
       console.log(error)
-      return serverError({message: 'Internal server error'})
+      return serverError({ message: 'Internal server error' })
     }
   }
 }

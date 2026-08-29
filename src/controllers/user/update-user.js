@@ -1,4 +1,4 @@
-import { badRequest, ok } from './helpers/http.js'
+import { badRequest, ok } from '../helpers/http.js'
 import {
   generateInvalidPasswordResponse,
   generateInvalidEmailResponse,
@@ -7,7 +7,7 @@ import {
   checkIfPasswordIsValid,
   checkIfEmailIsValid,
   checkIfIdIsValid,
-} from './helpers/user.js'
+} from '../helpers/user.js'
 
 export class UpdateUserController {
   constructor(updateUserUseCase) {
