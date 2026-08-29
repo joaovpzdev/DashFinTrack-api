@@ -20,6 +20,6 @@ export class PostgresUpdateUserRepository {
         `
 
     const updatedUser = await PostgresHelper.query(updateQuery, updateValues)
-    return updatedUser
+    return updatedUser[0]
   }
 }

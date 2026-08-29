@@ -3,6 +3,7 @@ import {
   generateInvalidPasswordResponse,
   generateInvalidEmailResponse,
   generateInvalidIdResponse,
+  userNotFoundResponse,
   checkIfPasswordIsValid,
   checkIfEmailIsValid,
   checkIfIdIsValid,
@@ -46,6 +47,10 @@ export class UpdateUserController {
         }
       }
       const updatedUser = await this.updateUserUseCase.execute(userId, params)
+
+      if (!updatedUser) {
+        return userNotFoundResponse()
+      }
 
       return ok(updatedUser)
     } catch (error) {
