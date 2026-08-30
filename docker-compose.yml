@@ -5,7 +5,7 @@ services:
     environment:
       POSTGRES_USER: root
       POSTGRES_PASSWORD: samirabradinho
-      POSTGRES_DB: dashfintrack-api
+      POSTGRES_DB: dashfintrackapp
     ports:
       - '5432:5432'
     volumes:
