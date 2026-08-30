@@ -1,11 +1,6 @@
 import { badRequest, ok } from '../helpers/http.js'
-import {
-  generateInvalidPasswordResponse,
-  generateInvalidEmailResponse,
-  userNotFoundResponse,
-  checkIfPasswordIsValid,
-  checkIfEmailIsValid,
-} from '../helpers/user.js'
+import { updateUserSchema } from '../../../schemas/index.js'
+import { ZodError } from 'zod'
 import {
   checkIfIdIsValid,
   generateInvalidIdResponse,
@@ -25,37 +20,19 @@ export class UpdateUserController {
         return generateInvalidIdResponse()
       }
       const params = httpRequest.body
-      const allowedFields = ['first_name', 'last_name', 'email', 'password']
 
-      const someFieldIsNotAllowed = Object.keys(params).some(
-        (field) => !allowedFields.includes(field),
-      )
-      if (someFieldIsNotAllowed) {
-        return badRequest({ message: 'Some fields are not allowed' })
-      }
+      await updateUserSchema.parseAsync(params)
 
-      if (params.password) {
-        const passwordIsValid = checkIfPasswordIsValid(params.password)
 
-        if (!passwordIsValid) {
-          return generateInvalidPasswordResponse()
-        }
-      }
-
-      if (params.email) {
-        const emailIsValid = checkIfEmailIsValid(params.email)
-        if (!emailIsValid) {
-          return generateInvalidEmailResponse()
-        }
-      }
       const updatedUser = await this.updateUserUseCase.execute(userId, params)
-
-      if (!updatedUser) {
-        return userNotFoundResponse()
-      }
 
       return ok(updatedUser)
     } catch (error) {
+      if (error instanceof ZodError) {
+        return badRequest({
+          message: error.errors[0].message,
+        })
+      }
       console.log(error)
       return badRequest({ message: 'Internal server error' })
     }
