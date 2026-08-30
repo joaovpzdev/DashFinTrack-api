@@ -6,3 +6,5 @@ node_modules
 postgres_data
 
 .postgres
+
+3.22.4
