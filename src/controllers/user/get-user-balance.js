@@ -1,7 +1,7 @@
 import { ok, serverError } from '../helpers/http.js'
 import { userNotFoundResponse } from '../helpers/user.js'
 import { UserNotFoundError } from '../../errors/user.js'
-import { checkIfIdIsValid } from '../helpers/validation'
+import { checkIfIdIsValid } from '../helpers/validation.js'
 
 export class GetUserBalanceController {
   constructor(getUserBalanceUseCase) {
