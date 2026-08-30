@@ -3,7 +3,7 @@ import express from 'express'
 import { makeGetUserByIdController, makeCreateUserController, makeUpdateUserController } from './src/factories/controllers/user.js'
 import { makeDeleteUserController } from './src/factories/controllers/user.js'
 import { makeCreateTransactionController, makeGetTransactionsByUserIdController } from './src/factories/controllers/transaction.js'
-import { makeUpdateTransactionController } from './src/factories/controllers/transaction.js'
+import { makeUpdateTransactionController, makeDeleteTransactionController } from './src/factories/controllers/transaction.js'
 
 const app = express()
 
@@ -64,6 +64,14 @@ app.patch('/api/transactions/:transactionId', async (request, response) => {
   const updateTransactionController = makeUpdateTransactionController()
 
   const { statusCode, body } = await updateTransactionController.execute(request)
+
+  response.status(statusCode).json(body)
+}) 
+
+app.delete('/api/transactions/:transactionId', async (request, response) => {
+  const deleteTransactionController = makeDeleteTransactionController()
+
+  const { statusCode, body } = await deleteTransactionController.execute(request)
 
   response.status(statusCode).json(body)
 }) 

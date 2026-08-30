@@ -26,6 +26,13 @@ export const userNotFound = (body) => {
   }
 }
 
+export const notFound = (body) => {
+  return {
+    statusCode: 404,
+    body,
+  }
+}
+
 export const serverError = (body) => {
   return {
     statusCode: 500,
