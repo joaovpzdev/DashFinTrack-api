@@ -1,0 +1,15 @@
+services:
+  postgres:
+    image: postgres
+    container_name: dashfintrack-api-postgres
+    environment:
+      POSTGRES_USER: root
+      POSTGRES_PASSWORD: samirabradinho
+      POSTGRES_DB: dashfintrack-api
+    ports:
+      - '5432:5432'
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+volumes:
+  postgres_data:
