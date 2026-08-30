@@ -11,7 +11,7 @@ export class PostgresCreateTransactionRepository {
         createTransactionParams.date,
         createTransactionParams.amount,
         createTransactionParams.type,
-      ],
+      ]
     )
     return createdTransaction[0]
   }
