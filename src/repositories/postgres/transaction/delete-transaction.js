@@ -1,18 +1,17 @@
-import { prisma } from "../../../prisma/prisma.js";
+import { prisma } from '../../../../prisma/prisma.js'
 
 export class PostgresDeleteTransactionRepository {
-    async execute(transactionId) {
-        try {
-             await prisma.transaction.delete({
-               where: {
-                 id: transactionId,
-               },
-             })
-
-        }catch (error) {
-            console.error(error)
-           return null
-        }
-
+  async execute(transactionId) {
+    try {
+      const deletedTransaction = await prisma.transaction.delete({
+        where: {
+          id: transactionId,
+        },
+      })
+      return deletedTransaction
+    } catch (error) {
+      console.error(error)
+      return null
     }
+  }
 }
