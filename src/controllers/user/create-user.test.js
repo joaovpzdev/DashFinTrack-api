@@ -1,4 +1,5 @@
 import { CreateUserController } from './create-user.js'
+import { faker } from '@faker-js/faker'
 
 describe('Create User Controller', () => {
   class CreateUserUseCaseStub {
@@ -15,9 +16,9 @@ describe('Create User Controller', () => {
 
     const httpRequest = {
       body: {
-        first_name: 'Joao',
-        last_name: 'Zolim',
-        email: 'joao.zolim@example.com',
+        first_name: faker.person.firstName(),
+        last_name: faker.person.lastName(),
+        email: faker.internet.email(),
         password: 'securepassword',
       },
     }
@@ -45,8 +46,8 @@ it('should return 400 if first_name is not provided', async () => {
   const httpRequest = {
     body: {
       first_name: '',
-      last_name: 'Zolim',
-      email: 'joao.zolim@example.com',
+      last_name: faker.person.lastName(),
+      email: faker.internet.email(),
       password: 'securepassword',
     },
   }
@@ -72,8 +73,8 @@ it('should return 400 if last_name is not provided', async () => {
 
   const httpRequest = {
     body: {
-      first_name: 'Joao',
-      email: 'joao.zolim@example.com',
+      first_name: faker.person.firstName(),
+      email: faker.internet.email(),
       password: 'securepassword',
     },
   }
@@ -99,8 +100,8 @@ it('should return 400 if email is not provided', async () => {
 
   const httpRequest = {
     body: {
-      first_name: 'Joao',
-      last_name: 'Zolim',
+      first_name: faker.person.firstName(),
+      last_name: faker.person.lastName(),
       password: 'securepassword',
     },
   }
@@ -126,8 +127,8 @@ it('should return 400 if email is not valid', async () => {
 
   const httpRequest = {
     body: {
-      first_name: 'Joao',
-      last_name: 'Zolim',
+      first_name: faker.person.firstName(),
+      last_name: faker.person.lastName(),
       email: 'invalid-email',
       password: 'securepassword',
     },
@@ -154,9 +155,9 @@ it('should return 400 if password is not provided', async () => {
 
   const httpRequest = {
     body: {
-      first_name: 'Joao',
-      last_name: 'Zolim',
-      email: 'joao.zolim@example.com',
+      first_name: faker.person.firstName(),
+      last_name: faker.person.lastName(),
+      email: faker.internet.email(),
     },
   }
 
@@ -181,9 +182,9 @@ it('should return 400 if less than 6 characters in password', async () => {
 
   const httpRequest = {
     body: {
-      first_name: 'Joao',
-      last_name: 'Zolim',
-      email: 'joao.zolim@example.com',
+      first_name: faker.person.firstName(),
+      last_name: faker.person.lastName(),
+      email: faker.internet.email(),
       password: 'iifs',
     },
   }
@@ -209,9 +210,9 @@ it('should call CreateUserUseCase with correct parameters', async () => {
 
   const httpRequest = {
     body: {
-      first_name: 'Joao',
-      last_name: 'Zolim',
-      email: 'joao.zolim@example.com',
+      first_name: faker.person.firstName(),
+      last_name: faker.person.lastName(),
+      email: faker.internet.email(),
       password: 'securepassword',
     },
   }
