@@ -7,9 +7,11 @@ export class CreateUserController {
   constructor(createUserUseCase) {
     this.createUserUseCase = createUserUseCase
   }
+
   async execute(httpRequest) {
     try {
       const params = httpRequest.body
+
       await createUserSchema.parseAsync(params)
 
       const createdUser = await this.createUserUseCase.execute(params)
@@ -21,11 +23,13 @@ export class CreateUserController {
           message: error.errors[0].message,
         })
       }
+
       if (error instanceof EmailAlreadyExistsError) {
         return badRequest({ message: error.message })
       }
-      console.log(error)
-      return serverError({ message: 'Internal server error' })
+
+      console.error(error)
+      return serverError()
     }
   }
 }

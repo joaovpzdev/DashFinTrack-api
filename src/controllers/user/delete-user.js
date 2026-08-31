@@ -24,8 +24,8 @@ export class DeleteUserController {
       if (!deletedUser) {
         return userNotFoundResponse()
       }
-
       return ok(deletedUser)
+      
     } catch (error) {
       console.log(error)
       return serverError()

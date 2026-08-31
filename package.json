@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "test": "jest",
-    "test:watch": "jest --watch --passWithNoTests",
+    "test:watch": "jest --watch --passWithNoTests --silent",
     "postinstall": "npx prisma generate",
     "start:dev": "node --watch index.js",
     "test:smoke": "node scripts/smoke-routes.mjs"
