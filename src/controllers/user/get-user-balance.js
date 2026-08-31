@@ -17,10 +17,10 @@ export class GetUserBalanceController {
           return userNotFoundResponse()
         }
 
-        const balance = await this.getUserBalanceUseCase.execute({ userId })
+        const balance = await this.getUserBalanceUseCase.execute(userId )
 
         return ok(balance)
-
+        
     } catch (error) {
       if (error instanceof UserNotFoundError) {
         return userNotFoundResponse()
