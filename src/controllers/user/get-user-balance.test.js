@@ -1,0 +1,49 @@
+import { faker } from '@faker-js/faker'
+import { GetUserBalanceController } from './get-user-balance.js'
+
+describe('GetUserBalanceController', () => {
+  class GetUserBalanceUseCaseStub {
+    async execute() {
+      return faker.number.int()
+    }
+  }
+
+  const makeSut = () => {
+    const getUserBalanceUseCase = new GetUserBalanceUseCaseStub()
+    const sut = new GetUserBalanceController(getUserBalanceUseCase)
+    return { getUserBalanceUseCase, sut }
+  }
+
+  const httpRequest = {
+    params: {
+        userId: faker.string.uuid()
+    }
+  }
+
+  it('should return 200 when getting user balance', async () => {
+    const { sut } = makeSut()
+
+    const result = await sut.execute(httpRequest)
+
+    expect(result.statusCode).toBe(200)
+  })
+
+  it('should return 404 when userId is invalid', async () => {
+
+    const { sut } = makeSut()
+    
+    const result = await sut.execute({params: { userId: 'invalid-id' }})
+
+    expect(result.statusCode).toBe(404)
+  })
+
+  it('should return 500 if GetUserBalanceUseCase throws', async () => {
+    const { getUserBalanceUseCase, sut } = makeSut()
+
+    jest.spyOn(getUserBalanceUseCase, 'execute').mockRejectedValueOnce(new Error())
+    
+    const result = await sut.execute(httpRequest)
+
+    expect(result.statusCode).toBe(500)
+  })
+})
