@@ -13,7 +13,7 @@ describe('Create User Controller', () => {
     const createUserUseCase = new CreateUserUseCaseStub()
     const createUserController = new CreateUserController(createUserUseCase)
 
-    const httpsRequest = {
+    const httpRequest = {
       body: {
         first_name: 'Joao',
         last_name: 'Zolim',
@@ -24,13 +24,11 @@ describe('Create User Controller', () => {
 
     //act
 
-    const result = await createUserController.execute(httpsRequest)
+    const result = await createUserController.execute(httpRequest)
 
     //assert
     expect(result.statusCode).toBe(201)
-    expect(result.body).not.toBeNull()
-    expect(result.body).not.toBeUndefined()
-  })
+    expect(result.body).toEqual(httpRequest.body)
 })
 
 it('should return 400 if first_name is not provided', async () => {
@@ -44,7 +42,7 @@ it('should return 400 if first_name is not provided', async () => {
   const createUserUseCase = new CreateUserUseCaseStub()
   const createUserController = new CreateUserController(createUserUseCase)
 
-  const httpsRequest = {
+  const httpRequest = {
     body: {
       first_name: '',
       last_name: 'Zolim',
@@ -55,7 +53,7 @@ it('should return 400 if first_name is not provided', async () => {
 
   //act
 
-  const result = await createUserController.execute(httpsRequest)
+  const result = await createUserController.execute(httpRequest)
 
   //assert
   expect(result.statusCode).toBe(400)
@@ -72,10 +70,9 @@ it('should return 400 if last_name is not provided', async () => {
   const createUserUseCase = new CreateUserUseCaseStub()
   const createUserController = new CreateUserController(createUserUseCase)
 
-  const httpsRequest = {
+  const httpRequest = {
     body: {
       first_name: 'Joao',
-      last_name: '',
       email: 'joao.zolim@example.com',
       password: 'securepassword',
     },
@@ -83,7 +80,7 @@ it('should return 400 if last_name is not provided', async () => {
 
   //act
 
-  const result = await createUserController.execute(httpsRequest)
+  const result = await createUserController.execute(httpRequest)
 
   //assert
   expect(result.statusCode).toBe(400)
@@ -100,18 +97,45 @@ it('should return 400 if email is not provided', async () => {
   const createUserUseCase = new CreateUserUseCaseStub()
   const createUserController = new CreateUserController(createUserUseCase)
 
-  const httpsRequest = {
+  const httpRequest = {
     body: {
       first_name: 'Joao',
       last_name: 'Zolim',
-      email: '',
       password: 'securepassword',
     },
   }
 
   //act
 
-  const result = await createUserController.execute(httpsRequest)
+  const result = await createUserController.execute(httpRequest)
+
+  //assert
+  expect(result.statusCode).toBe(400)
+})
+
+it('should return 400 if email is not valid', async () => {
+  // arrange
+  class CreateUserUseCaseStub {
+    execute(user) {
+      return user
+    }
+  }
+
+  const createUserUseCase = new CreateUserUseCaseStub()
+  const createUserController = new CreateUserController(createUserUseCase)
+
+  const httpRequest = {
+    body: {
+      first_name: 'Joao',
+      last_name: 'Zolim',
+      email: 'invalid-email',
+      password: 'securepassword',
+    },
+  }
+
+  //act
+
+  const result = await createUserController.execute(httpRequest)
 
   //assert
   expect(result.statusCode).toBe(400)
@@ -128,19 +152,74 @@ it('should return 400 if password is not provided', async () => {
   const createUserUseCase = new CreateUserUseCaseStub()
   const createUserController = new CreateUserController(createUserUseCase)
 
-  const httpsRequest = {
+  const httpRequest = {
     body: {
       first_name: 'Joao',
       last_name: 'Zolim',
       email: 'joao.zolim@example.com',
-      password: '',
     },
   }
 
   //act
 
-  const result = await createUserController.execute(httpsRequest)
+  const result = await createUserController.execute(httpRequest)
 
   //assert
   expect(result.statusCode).toBe(400)
+})
+
+it('should return 400 if less than 6 characters in password', async () => {
+  // arrange
+  class CreateUserUseCaseStub {
+    execute(user) {
+      return user
+    }
+  }
+
+  const createUserUseCase = new CreateUserUseCaseStub()
+  const createUserController = new CreateUserController(createUserUseCase)
+
+  const httpRequest = {
+    body: {
+      first_name: 'Joao',
+      last_name: 'Zolim',
+      email: 'joao.zolim@example.com',
+      password: 'iifs',
+    },
+  }
+
+  //act
+
+  const result = await createUserController.execute(httpRequest)
+
+  //assert
+  expect(result.statusCode).toBe(400)
+})
+
+it('should call CreateUserUseCase with correct parameters', async () => {
+  // arrange
+  class CreateUserUseCaseStub {
+    execute(user) {
+      return user
+    }
+  }
+
+  const createUserUseCase = new CreateUserUseCaseStub()
+  const createUserController = new CreateUserController(createUserUseCase)
+
+  const httpRequest = {
+    body: {
+      first_name: 'Joao',
+      last_name: 'Zolim',
+      email: 'joao.zolim@example.com',
+      password: 'securepassword',
+    },
+  }
+  
+  const executeSpy = jest.spyOn(createUserUseCase, 'execute')
+  //act
+  await createUserController.execute(httpRequest)
+  //assert
+  expect(executeSpy).toHaveBeenCalledWith(httpRequest.body)
+})
 })
