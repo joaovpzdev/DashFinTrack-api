@@ -29,3 +29,7 @@ export const createTransactionSchema = z.object({
       decimal_separator: '.',
     }),
 })
+
+export const updateTransactionSchema = createTransactionSchema.omit({ user_id: true }).partial().strict({
+  message: 'Some provided field is not allowed'
+})
