@@ -1,18 +1,15 @@
-
 import { CreateTransactionUseCase } from './create-transaction.js'
 import { UserNotFoundError } from '../../errors/user.js'
 import { transaction, user } from '../../../tests/index.js'
 
 describe('CreateTransactionUseCase', () => {
   const createTransactionParams = {
-   ...transaction,
-   id: undefined
+    ...transaction,
+    id: undefined,
   }
 
-  
-
   class PostgresCreateTransactionRepositoryStub {
-    async execute(transaction) {
+    async execute() {
       return transaction
     }
   }
@@ -26,8 +23,6 @@ describe('CreateTransactionUseCase', () => {
   class PostgresGetUserByIdRepositoryStub {
     async execute() {
       return user
-
-
     }
   }
 
@@ -59,7 +54,7 @@ describe('CreateTransactionUseCase', () => {
     // Act
     const result = await sut.execute(createTransactionParams)
     // Assert
-    expect(result).toEqual({ ...createTransactionParams, id: 'random_id' })
+    expect(result).toEqual(transaction)
   })
 
   it('should call PostgresGetUserByIdRepository with the correct params', async () => {
@@ -107,7 +102,9 @@ describe('CreateTransactionUseCase', () => {
   it('should throw UserNotFoundError if the user does not exist', async () => {
     // Arrange
     const { sut, postgresGetUserByIdRepository } = makeSut()
-    jest.spyOn(postgresGetUserByIdRepository, 'execute').mockResolvedValueOnce(null)
+    jest
+      .spyOn(postgresGetUserByIdRepository, 'execute')
+      .mockResolvedValueOnce(null)
 
     const promise = sut.execute(createTransactionParams)
     // Act & Assert
@@ -119,7 +116,9 @@ describe('CreateTransactionUseCase', () => {
   it('should throw if PostgresGetUserByIdRepository throws', async () => {
     // Arrange
     const { sut, postgresGetUserByIdRepository } = makeSut()
-    jest.spyOn(postgresGetUserByIdRepository, 'execute').mockRejectedValue(new Error())
+    jest
+      .spyOn(postgresGetUserByIdRepository, 'execute')
+      .mockRejectedValue(new Error())
 
     const promise = sut.execute(createTransactionParams)
     // Act & Assert
@@ -149,6 +148,4 @@ describe('CreateTransactionUseCase', () => {
     // Act & Assert
     await expect(promise).rejects.toThrow()
   })
-
-  
 })
