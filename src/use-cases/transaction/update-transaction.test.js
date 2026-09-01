@@ -1,25 +1,15 @@
 import { faker } from '@faker-js/faker'
 import { UpdateTransactionUseCase } from './update-transaction.js'
+import { transaction } from '../../../tests/index.js'
+
 
 describe('UpdateTransactionUseCase', () => {
 
 
-    const transaction = {
-            id: faker.string.uuid(),
-            first_name: faker.person.firstName(),
-            last_name: faker.person.lastName(),
-            email: faker.internet.email(),
-            password: faker.internet.password({
-              length: 7,
-            }),
-          }
-
     class PostgresUpdateTransactionRepositoryStub {
-        async execute(transactionId) {
-            return {
-                id: transactionId,
-                ...transaction
-            }
+        async execute() {
+            return transaction
+            
         }
     }
     const makeSut = () => {

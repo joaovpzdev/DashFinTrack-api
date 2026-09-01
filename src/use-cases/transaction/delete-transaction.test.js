@@ -1,22 +1,14 @@
 import { faker } from '@faker-js/faker'
 import { DeleteTransactionUseCase } from './delete-transaction.js'
+import { transaction } from '../../../tests/index.js'
+
 describe('DeleteTransactionUseCase', () => {
-  const transaction = {
-    id: faker.string.uuid(),
-    first_name: faker.person.firstName(),
-    last_name: faker.person.lastName(),
-    email: faker.internet.email(),
-    password: faker.internet.password({
-      length: 7,
-    }),
-  }
+
 
   class PostgresDeleteTransactionRepositoryStub {
-    async execute(transactionId) {
-      return {
-        ...transaction,
-        id: transactionId
-      }
+    async execute() {
+      return transaction
+    
     }
   }
 
@@ -37,10 +29,7 @@ describe('DeleteTransactionUseCase', () => {
   
     const result = await sut.execute(transaction.id)
 
-    expect(result).toEqual({
-      ...transaction,
-      id: transaction.id,
-    })
+    expect(result).toEqual(transaction)
   })
 
   it('should call PostgresDeleteTransactionRepository with the correct transaction ID', async () => {
