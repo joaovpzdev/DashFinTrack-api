@@ -4,7 +4,7 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "test": "jest --passWithNoTests --silent",
+    "test": "dotenv -e .env.test jest --passWithNoTests --silent",
     "test:watch": "jest --watch --passWithNoTests --silent",
     "test:coverage": "jest --coverage --passWithNoTests --silent",
     "postinstall": "npx prisma generate",

@@ -11,13 +11,13 @@ services:
     volumes:
       - postgres_data:/var/lib/postgresql
 
-  postgres-test:
+  postgres_test:
     image: postgres
     container_name: dashfintrack-api-postgres-test
     environment:
       POSTGRES_USER: root
       POSTGRES_PASSWORD: samirabradinho
-      POSTGRES_DB: dashfintrackapp
+      POSTGRES_DB: dashfintrackapp_test
     ports:
       - '5433:5432'
     volumes:
