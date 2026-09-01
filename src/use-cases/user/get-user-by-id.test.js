@@ -1,62 +1,52 @@
 import { GetUserByIdUseCase } from './get-user-by-id.js'
 import { faker } from '@faker-js/faker'
+import { user } from '../../../tests/index.js'
 
 describe('GetUserByIdUseCase', () => {
-
-    const user = {
-      id: faker.string.uuid(),
-      first_name: faker.person.firstName(),
-      last_name: faker.person.lastName(),
-      email: faker.internet.email(),
-      password: faker.internet.password({
-        length: 7,
-      }),
+  class PostgresGetUserByIdRepositoryStub {
+    async execute() {
+      return user
     }
-     class PostgresGetUserByIdRepositoryStub {
-         async execute() {
-             return user
-         }
-     }
+  }
 
+  const makeSut = () => {
+    const postgresGetUserByIdRepository =
+      new PostgresGetUserByIdRepositoryStub()
+    const sut = new GetUserByIdUseCase(postgresGetUserByIdRepository)
 
-
-    const makeSut = () => {
-        const postgresGetUserByIdRepository = new PostgresGetUserByIdRepositoryStub()
-        const sut = new GetUserByIdUseCase(postgresGetUserByIdRepository)
-
-        return {
-            sut,
-            postgresGetUserByIdRepository
-        }
+    return {
+      sut,
+      postgresGetUserByIdRepository,
     }
+  }
 
+  it('should get the user by id successfully', async () => {
+    const { sut } = makeSut()
 
-    it('should get the user by id successfully', async () => {
-        const { sut } = makeSut()
+    const result = await sut.execute(faker.string.uuid())
 
-        const result = await sut.execute(faker.string.uuid())
+    expect(result).toEqual(user)
+  })
 
-        expect(result).toEqual(user)
-    })
+  it('should call PostgresGetUserByIdRepository with correct params', async () => {
+    const { sut, postgresGetUserByIdRepository } = makeSut()
+    const executeSpy = jest.spyOn(postgresGetUserByIdRepository, 'execute')
+    const userId = faker.string.uuid()
 
-    it('should call PostgresGetUserByIdRepository with correct params', async () => {
-        const { sut, postgresGetUserByIdRepository } = makeSut()
-        const executeSpy = jest.spyOn(postgresGetUserByIdRepository, 'execute')
-        const userId = faker.string.uuid()
+    await sut.execute(userId)
 
-        await sut.execute(userId)
+    expect(executeSpy).toHaveBeenCalledWith(userId)
+  })
 
-        expect(executeSpy).toHaveBeenCalledWith(userId)
-    })
+  it('should throw if PostgresGetUserByIdRepository throws', async () => {
+    const { sut, postgresGetUserByIdRepository } = makeSut()
+    jest
+      .spyOn(postgresGetUserByIdRepository, 'execute')
+      .mockImplementationOnce(() => {
+        throw new Error()
+      })
+    const promise = sut.execute(faker.string.uuid())
 
-    it('should throw if PostgresGetUserByIdRepository throws', async () => {
-        const { sut, postgresGetUserByIdRepository } = makeSut()
-        jest.spyOn(postgresGetUserByIdRepository, 'execute').mockImplementationOnce(() => {
-            throw new Error()
-        })
-        const promise = sut.execute(faker.string.uuid())
-
-        await expect(promise).rejects.toThrow()
-    })
-
+    await expect(promise).rejects.toThrow()
+  })
 })
