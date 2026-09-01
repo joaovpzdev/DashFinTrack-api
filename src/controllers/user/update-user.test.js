@@ -1,5 +1,6 @@
 import { UpdateUserController } from './update-user.js'
 import { faker } from '@faker-js/faker'
+import { user } from '../../../tests/index.js'
 import { EmailAlreadyExistsError } from '../../errors/user.js'
 
 describe('UpdateUserController', () => {
@@ -16,15 +17,13 @@ describe('UpdateUserController', () => {
 
   const httpRequest = {
     params: {
-      userId: faker.string.uuid(),
+      userId: user.id,
     },
     body: {
-      first_name: faker.person.firstName(),
-      last_name: faker.person.lastName(),
-      email: faker.internet.email(),
-      password: faker.internet.password({
-        length: 7,
-      }),
+      first_name: user.first_name,
+      last_name: user.last_name,
+      email: user.email,
+      password: user.password,
     },
   }
 
