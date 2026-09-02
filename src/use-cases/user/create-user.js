@@ -17,7 +17,7 @@ export class CreateUserUseCase {
     }
 
     //gerar ID
-    const userId = await this.idGeneratorAdapter.generate()
+    const userId = await this.idGeneratorAdapter.execute()
     //criptografar senha
     const hashedPassword = await this.passwordHasherAdapter.execute(createUserParams.password)
     //inserir usuario no postgres

@@ -6,6 +6,7 @@ import {
   generateInvalidIdResponse,
 } from '../helpers/validation.js'
 import { EmailAlreadyExistsError, UserNotFoundError } from '../../errors/user.js'
+import { userNotFoundResponse } from '../helpers/user.js'
 
 export class UpdateUserController {
   constructor(updateUserUseCase) {
@@ -41,7 +42,7 @@ export class UpdateUserController {
       }
 
       if (error instanceof UserNotFoundError) {
-        return badRequest({ message: error.message })
+        return userNotFoundResponse()
       }
 
       console.error(error)

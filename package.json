@@ -4,7 +4,7 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "test": "dotenv -e .env.test jest --passWithNoTests --silent",
+    "test": "dotenv -e .env.test jest  --passWithNoTests --silent --detectOpenHandles --forceExit",
     "test:watch": "jest --watch --passWithNoTests --silent",
     "test:coverage": "jest --coverage --passWithNoTests --silent",
     "postinstall": "npx prisma generate",
@@ -35,6 +35,7 @@
     "express": "^5.2.1",
     "husky": "^8.0.3",
     "pg": "^8.23.0",
+    "swagger-ui-express": "^5.0.0",
     "uuid": "^9.0.0",
     "validator": "^13.11.0",
     "zod": "^3.22.4"

@@ -1,8 +1,7 @@
 import { createTransactionSchema } from '../../../schemas/transaction.js'
-import { serverError, created, badRequest } from '../helpers/http.js'
+import { serverError, created, badRequest, userNotFound } from '../helpers/http.js'
 import { ZodError } from 'zod'
-import { UserNotFoundError } from '../../../errors/user.js'
-import { userNotFound } from '../helpers/http.js'
+import { UserNotFoundError } from '../../errors/user.js'
 export class CreateTransactionController {
   constructor(createTransactionUseCase) {
     this.createTransactionUseCase = createTransactionUseCase
