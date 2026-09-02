@@ -1,9 +1,10 @@
-import { userNotFoundResponse } from '../helpers/user.js'
 import { ok, serverError } from '../helpers/http.js'
+import { userNotFoundResponse } from '../helpers/user.js'
 import {
   checkIfIdIsValid,
   generateInvalidIdResponse,
 } from '../helpers/validation.js'
+import { UserNotFoundError } from '../../errors/user.js'
 
 export class DeleteUserController {
   constructor(DeleteUserUseCase) {
@@ -21,12 +22,11 @@ export class DeleteUserController {
 
       const deletedUser = await this.DeleteUserUseCase.execute(userId)
 
-      if (!deletedUser) {
+      return ok(deletedUser)
+    } catch (error) {
+      if (error instanceof UserNotFoundError) {
         return userNotFoundResponse()
       }
-      return ok(deletedUser)
-      
-    } catch (error) {
       console.log(error)
       return serverError()
     }
