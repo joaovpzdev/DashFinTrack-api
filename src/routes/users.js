@@ -6,7 +6,6 @@ import {
   makeGetUserBalanceController,
   makeDeleteUserController,
 } from '../factories/controllers/user.js'
-import { makeGetTransactionsByUserIdController } from '../factories/controllers/transaction.js'
 
 export const usersRouter = Router()
 
@@ -50,15 +49,5 @@ usersRouter.delete('/:userId', async (request, response) => {
   response.status(statusCode).json(body)
 })
 
-usersRouter.get(
-  '/:userId/transactions',
-  async (request, response) => {
-    const getTransactionsByUserIdController =
-      makeGetTransactionsByUserIdController()
 
-    const { statusCode, body } =
-      await getTransactionsByUserIdController.execute(request)
 
-    response.status(statusCode).json(body)
-  },
-)
