@@ -51,12 +51,16 @@ describe('PostgresDeleteTransactionRepository', () => {
   })
   it('should throw TransactionNotFoundError if Prisma throws P2025 error', async () => {
     const sut = new PostgresDeleteTransactionRepository()
-    jest.spyOn(prisma.transaction, 'delete').mockRejectedValueOnce(new PrismaClientKnownRequestError('', {
-      code: 'P2025',
-    })) 
+    jest.spyOn(prisma.transaction, 'delete').mockRejectedValueOnce(
+      new PrismaClientKnownRequestError('', {
+        code: 'P2025',
+      }),
+    )
 
     const promise = sut.execute(transaction.id)
 
-    await expect(promise).rejects.toThrow(new TransactionNotFoundError(transaction.id))
+    await expect(promise).rejects.toThrow(
+      new TransactionNotFoundError(transaction.id),
+    )
   })
 })

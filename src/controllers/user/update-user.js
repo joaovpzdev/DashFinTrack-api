@@ -5,7 +5,10 @@ import {
   checkIfIdIsValid,
   generateInvalidIdResponse,
 } from '../helpers/validation.js'
-import { EmailAlreadyExistsError, UserNotFoundError } from '../../errors/user.js'
+import {
+  EmailAlreadyExistsError,
+  UserNotFoundError,
+} from '../../errors/user.js'
 import { userNotFoundResponse } from '../helpers/user.js'
 
 export class UpdateUserController {

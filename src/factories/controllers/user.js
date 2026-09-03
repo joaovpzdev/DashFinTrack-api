@@ -5,7 +5,10 @@ import { GetUserBalanceUseCase } from '../../use-cases/user/get-user-balance.js'
 import { PostgresGetUserBalanceRepository } from '../../repositories/postgres/user/get-user-balance.js'
 import { GetUserBalanceController } from '../../controllers/user/get-user-balance.js'
 import { CreateUserUseCase } from '../../use-cases/user/create-user.js'
-import { PasswordHasherAdapter, IdGeneratorAdapter } from '../../../adapters/index.js'
+import {
+  PasswordHasherAdapter,
+  IdGeneratorAdapter,
+} from '../../../adapters/index.js'
 import { PostgresCreateUserRepository } from '../../repositories/postgres/user/create-user.js'
 import { PostgresGetUserByEmailRepository } from '../../repositories/postgres/user/get-user-by-email.js'
 import { CreateUserController } from '../../controllers/user/create-user.js'
@@ -75,9 +78,14 @@ export const makeGetUserBalanceController = () => {
 
   const getUserByIdRepository = new PostgresGetUserByIdRepository()
 
-  const getUserBalanceUseCase = new GetUserBalanceUseCase(getUserBalanceRepository, getUserByIdRepository)
+  const getUserBalanceUseCase = new GetUserBalanceUseCase(
+    getUserBalanceRepository,
+    getUserByIdRepository,
+  )
 
-  const getUserBalanceController = new GetUserBalanceController(getUserBalanceUseCase)
+  const getUserBalanceController = new GetUserBalanceController(
+    getUserBalanceUseCase,
+  )
 
   return getUserBalanceController
 }

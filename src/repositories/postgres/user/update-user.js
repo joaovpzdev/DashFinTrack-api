@@ -11,14 +11,14 @@ export class PostgresUpdateUserRepository {
         },
         data: updateUserParams,
       })
-    }  catch (error) {
-          if (error instanceof PrismaClientKnownRequestError) {
-            if (error.code === 'P2025') {
-              throw new UserNotFoundError(userId)
-            }
-          }
-        
-              throw error
-            }
+    } catch (error) {
+      if (error instanceof PrismaClientKnownRequestError) {
+        if (error.code === 'P2025') {
+          throw new UserNotFoundError(userId)
+        }
+      }
+
+      throw error
+    }
   }
 }

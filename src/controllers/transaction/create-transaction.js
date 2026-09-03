@@ -1,5 +1,10 @@
 import { createTransactionSchema } from '../../../schemas/transaction.js'
-import { serverError, created, badRequest, userNotFound } from '../helpers/http.js'
+import {
+  serverError,
+  created,
+  badRequest,
+  userNotFound,
+} from '../helpers/http.js'
 import { ZodError } from 'zod'
 import { UserNotFoundError } from '../../errors/user.js'
 export class CreateTransactionController {
@@ -20,7 +25,7 @@ export class CreateTransactionController {
           message: error.errors[0].message,
         })
       }
-      if(error instanceof UserNotFoundError) {
+      if (error instanceof UserNotFoundError) {
         return userNotFound()
       }
 

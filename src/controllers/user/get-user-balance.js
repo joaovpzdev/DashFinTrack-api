@@ -12,15 +12,14 @@ export class GetUserBalanceController {
     try {
       const userId = httpRequest.params.userId
 
-        const idIsValid = checkIfIdIsValid(userId)
-        if (!idIsValid) {
-          return userNotFoundResponse()
-        }
+      const idIsValid = checkIfIdIsValid(userId)
+      if (!idIsValid) {
+        return userNotFoundResponse()
+      }
 
-        const balance = await this.getUserBalanceUseCase.execute(userId )
+      const balance = await this.getUserBalanceUseCase.execute(userId)
 
-        return ok(balance)
-        
+      return ok(balance)
     } catch (error) {
       if (error instanceof UserNotFoundError) {
         return userNotFoundResponse()

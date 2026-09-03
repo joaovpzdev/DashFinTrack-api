@@ -4,8 +4,6 @@ import { EmailAlreadyExistsError } from '../../errors/user.js'
 import { user } from '../../../tests/index.js'
 
 describe('UpdateUserUseCase', () => {
-
-
   class PostgresGetUserByEmailRepositoryStub {
     async execute() {
       return null
@@ -87,14 +85,17 @@ describe('UpdateUserUseCase', () => {
 
   it('should throw EmailAlreadyExistsError if the email is already in use', async () => {
     const { sut, postgresGetUserByEmailRepository } = makeSut()
-    jest.spyOn(postgresGetUserByEmailRepository, 'execute').mockResolvedValueOnce(user)
-
+    jest
+      .spyOn(postgresGetUserByEmailRepository, 'execute')
+      .mockResolvedValueOnce(user)
 
     const promise = sut.execute(faker.string.uuid(), {
-      email: user.email
+      email: user.email,
     })
 
-    await expect(promise).rejects.toThrow(new EmailAlreadyExistsError(user.email))
+    await expect(promise).rejects.toThrow(
+      new EmailAlreadyExistsError(user.email),
+    )
   })
 
   it('should call PostgresUpdateUserRepository with the correct values', async () => {
@@ -102,24 +103,25 @@ describe('UpdateUserUseCase', () => {
     const updateUserRepositorySpy = jest.spyOn(updateUserRepository, 'execute')
 
     await sut.execute(user.id, {
-        first_name: user.first_name,
-        last_name: user.last_name,
-        email: user.email,
-        password: user.password,
+      first_name: user.first_name,
+      last_name: user.last_name,
+      email: user.email,
+      password: user.password,
     })
 
-    
     expect(updateUserRepositorySpy).toHaveBeenCalledWith(user.id, {
-        first_name: user.first_name,
-        last_name: user.last_name,
-        email: user.email,
-        password: 'hashed_password',
+      first_name: user.first_name,
+      last_name: user.last_name,
+      email: user.email,
+      password: 'hashed_password',
     })
   })
 
   it('should throw if PostgresGetUserByEmailRepository throws', async () => {
     const { sut, postgresGetUserByEmailRepository } = makeSut()
-    jest.spyOn(postgresGetUserByEmailRepository, 'execute').mockRejectedValueOnce(new Error())
+    jest
+      .spyOn(postgresGetUserByEmailRepository, 'execute')
+      .mockRejectedValueOnce(new Error())
 
     const promise = sut.execute(faker.string.uuid(), {
       email: faker.internet.email(),
@@ -130,7 +132,9 @@ describe('UpdateUserUseCase', () => {
 
   it('should throw if PasswordHasherAdapter throws', async () => {
     const { sut, passwordHashedAdapter } = makeSut()
-    jest.spyOn(passwordHashedAdapter, 'execute').mockRejectedValueOnce(new Error())
+    jest
+      .spyOn(passwordHashedAdapter, 'execute')
+      .mockRejectedValueOnce(new Error())
 
     const promise = sut.execute(faker.string.uuid(), {
       password: faker.internet.password(),
@@ -141,13 +145,15 @@ describe('UpdateUserUseCase', () => {
 
   it('should throw if PostgresUpdateUserRepository throws', async () => {
     const { sut, updateUserRepository } = makeSut()
-    jest.spyOn(updateUserRepository, 'execute').mockRejectedValueOnce(new Error())
+    jest
+      .spyOn(updateUserRepository, 'execute')
+      .mockRejectedValueOnce(new Error())
 
     const promise = sut.execute(faker.string.uuid(), {
-        first_name: user.first_name,
-        last_name: user.last_name,
-        email: user.email,
-        password: user.password,
+      first_name: user.first_name,
+      last_name: user.last_name,
+      email: user.email,
+      password: user.password,
     })
 
     await expect(promise).rejects.toThrow()

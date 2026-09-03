@@ -103,7 +103,11 @@ describe('UpdateUserController', () => {
 
   it('should return 400 if UpdateUserController throws EmailAlreadyExistsError', async () => {
     const { sut, updateUserUseCase } = makeSut()
-    jest.spyOn(updateUserUseCase, 'execute').mockRejectedValueOnce(new EmailAlreadyExistsError(faker.internet.email()))
+    jest
+      .spyOn(updateUserUseCase, 'execute')
+      .mockRejectedValueOnce(
+        new EmailAlreadyExistsError(faker.internet.email()),
+      )
 
     const response = await sut.execute(httpRequest)
 
@@ -117,6 +121,9 @@ describe('UpdateUserController', () => {
 
     await sut.execute(httpRequest)
 
-    expect(executeSpy).toHaveBeenCalledWith(httpRequest.params.userId, httpRequest.body)
+    expect(executeSpy).toHaveBeenCalledWith(
+      httpRequest.params.userId,
+      httpRequest.body,
+    )
   })
 })

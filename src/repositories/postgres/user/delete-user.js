@@ -16,8 +16,8 @@ export class PostgresDeleteUserRepository {
           throw new UserNotFoundError(userId)
         }
       }
-    
-          throw error
-        }
+
+      throw error
+    }
   }
 }

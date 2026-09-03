@@ -1,5 +1,3 @@
-
-
 export class GetUserByIdUseCase {
   constructor(gerUserByIdRepository) {
     this.getUserByIdRepository = gerUserByIdRepository

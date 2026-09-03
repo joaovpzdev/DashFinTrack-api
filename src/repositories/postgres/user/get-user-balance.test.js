@@ -81,12 +81,12 @@ describe('PostgresGetUserBalanceRepository', () => {
       },
       _sum: {
         amount: true,
-      }
+      },
     })
     expect(prismaSpy).toHaveBeenCalledWith({
       where: {
         user_id: fakeUser.id,
-        type: TransactionType.INVESTMENT    ,
+        type: TransactionType.INVESTMENT,
       },
       _sum: {
         amount: true,
@@ -99,21 +99,20 @@ describe('PostgresGetUserBalanceRepository', () => {
       },
       _sum: {
         amount: true,
-      }
+      },
     })
   })
 
-   it('should throw if Prisma throws', async () => {
-          // Arrange
-          const sut = new PostgresGetUserBalanceRepository()
-          jest.spyOn(prisma.transaction, 'aggregate').mockRejectedValueOnce(new Error())
-  
-          const promise = sut.execute(fakeUser.id);
-  
-          // Act & Assert
-          await expect(promise).rejects.toThrow()
-      })
+  it('should throw if Prisma throws', async () => {
+    // Arrange
+    const sut = new PostgresGetUserBalanceRepository()
+    jest
+      .spyOn(prisma.transaction, 'aggregate')
+      .mockRejectedValueOnce(new Error())
 
+    const promise = sut.execute(fakeUser.id)
 
-
+    // Act & Assert
+    await expect(promise).rejects.toThrow()
+  })
 })

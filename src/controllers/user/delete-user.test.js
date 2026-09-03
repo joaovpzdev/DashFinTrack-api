@@ -34,7 +34,7 @@ describe('DeleteUserController', () => {
 
   it('should return 400 if id is invalid', async () => {
     const { sut } = makeSut()
-    
+
     const result = await sut.execute({ params: { userId: 'invalid-id' } })
 
     expect(result.statusCode).toBe(400)
@@ -43,7 +43,7 @@ describe('DeleteUserController', () => {
   it('should return 404 if user is not found', async () => {
     const { sut, deleteUserUseCase } = makeSut()
     const userId = faker.string.uuid()
-    
+
     // mock the execute method to throw the domain error and trigger 404 mapping
     jest
       .spyOn(deleteUserUseCase, 'execute')
@@ -56,8 +56,7 @@ describe('DeleteUserController', () => {
 
   it('should return 500 if DeleteUserUseCase throws', async () => {
     const { sut, deleteUserUseCase } = makeSut()
-    
-  
+
     jest.spyOn(deleteUserUseCase, 'execute').mockRejectedValueOnce(new Error())
 
     const result = await sut.execute(httpRequest)

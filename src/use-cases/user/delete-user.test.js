@@ -3,14 +3,12 @@ import { DeleteUserUseCase } from './delete-user'
 import { user } from '../../../tests/index.js'
 
 describe('DeleteUserUseCase', () => {
-
-
   class DeleteUserRepositoryStub {
     async execute() {
       return user
-      }
     }
-  
+  }
+
   const makeSut = () => {
     const postgresDeleteUserRepository = new DeleteUserRepositoryStub()
     const sut = new DeleteUserUseCase(postgresDeleteUserRepository)
@@ -40,9 +38,11 @@ describe('DeleteUserUseCase', () => {
 
   it('should throw if DeleteUserRepository throws', async () => {
     const { sut, postgresDeleteUserRepository } = makeSut()
-    jest.spyOn(postgresDeleteUserRepository, 'execute').mockImplementationOnce(() => {
-      throw new Error()
-    })
+    jest
+      .spyOn(postgresDeleteUserRepository, 'execute')
+      .mockImplementationOnce(() => {
+        throw new Error()
+      })
 
     const promise = sut.execute(faker.string.uuid())
 

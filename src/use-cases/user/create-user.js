@@ -1,7 +1,12 @@
 import { EmailAlreadyExistsError } from '../../errors/user.js'
 
 export class CreateUserUseCase {
-  constructor(createUserRepository, getUserByEmailRepository, passwordHasherAdapter, idGeneratorAdapter) {
+  constructor(
+    createUserRepository,
+    getUserByEmailRepository,
+    passwordHasherAdapter,
+    idGeneratorAdapter,
+  ) {
     this.createUserRepository = createUserRepository
     this.getUserByEmailRepository = getUserByEmailRepository
     this.passwordHasherAdapter = passwordHasherAdapter
@@ -19,7 +24,9 @@ export class CreateUserUseCase {
     //gerar ID
     const userId = await this.idGeneratorAdapter.execute()
     //criptografar senha
-    const hashedPassword = await this.passwordHasherAdapter.execute(createUserParams.password)
+    const hashedPassword = await this.passwordHasherAdapter.execute(
+      createUserParams.password,
+    )
     //inserir usuario no postgres
     const user = {
       ...createUserParams,

@@ -48,6 +48,3 @@ usersRouter.delete('/:userId', async (request, response) => {
 
   response.status(statusCode).json(body)
 })
-
-
-

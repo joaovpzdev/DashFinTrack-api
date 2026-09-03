@@ -4,7 +4,7 @@ import { PostgresGetUserByIdRepository } from './get-user-by-id.js'
 
 describe('PostgresGetUserByIdRepository', () => {
   it('should get user by id', async () => {
-    const user = await prisma.user.create({data: fakeUser})
+    const user = await prisma.user.create({ data: fakeUser })
 
     const sut = new PostgresGetUserByIdRepository()
 
@@ -19,17 +19,16 @@ describe('PostgresGetUserByIdRepository', () => {
 
     await sut.execute(fakeUser.id)
 
-    expect(prismaSpy).toHaveBeenCalledWith({where: {id: fakeUser.id}})
+    expect(prismaSpy).toHaveBeenCalledWith({ where: { id: fakeUser.id } })
   })
-   it('should throw if Prisma throws', async () => {
-          // Arrange
-          const sut = new PostgresGetUserByIdRepository()
-          jest.spyOn(prisma.user, 'findUnique').mockRejectedValueOnce(new Error())
-  
-          const promise = sut.execute(fakeUser.id);
-  
-          // Act & Assert
-          await expect(promise).rejects.toThrow()
-      })
+  it('should throw if Prisma throws', async () => {
+    // Arrange
+    const sut = new PostgresGetUserByIdRepository()
+    jest.spyOn(prisma.user, 'findUnique').mockRejectedValueOnce(new Error())
+
+    const promise = sut.execute(fakeUser.id)
+
+    // Act & Assert
+    await expect(promise).rejects.toThrow()
+  })
 })
-   

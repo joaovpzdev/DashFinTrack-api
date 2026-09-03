@@ -17,8 +17,8 @@ describe('GetUserBalanceController', () => {
 
   const httpRequest = {
     params: {
-        userId: faker.string.uuid()
-    }
+      userId: faker.string.uuid(),
+    },
   }
 
   it('should return 200 when getting user balance', async () => {
@@ -30,10 +30,9 @@ describe('GetUserBalanceController', () => {
   })
 
   it('should return 404 when userId is invalid', async () => {
-
     const { sut } = makeSut()
-    
-    const result = await sut.execute({params: { userId: 'invalid-id' }})
+
+    const result = await sut.execute({ params: { userId: 'invalid-id' } })
 
     expect(result.statusCode).toBe(404)
   })
@@ -41,8 +40,10 @@ describe('GetUserBalanceController', () => {
   it('should return 500 if GetUserBalanceUseCase throws', async () => {
     const { getUserBalanceUseCase, sut } = makeSut()
 
-    jest.spyOn(getUserBalanceUseCase, 'execute').mockRejectedValueOnce(new Error())
-    
+    jest
+      .spyOn(getUserBalanceUseCase, 'execute')
+      .mockRejectedValueOnce(new Error())
+
     const result = await sut.execute(httpRequest)
 
     expect(result.statusCode).toBe(500)
@@ -61,7 +62,9 @@ describe('GetUserBalanceController', () => {
   it('should return 404 if GetUserBalanceUseCase throws UserNotFoundError', async () => {
     const { getUserBalanceUseCase, sut } = makeSut()
 
-    jest.spyOn(getUserBalanceUseCase, 'execute').mockRejectedValueOnce(new UserNotFoundError)
+    jest
+      .spyOn(getUserBalanceUseCase, 'execute')
+      .mockRejectedValueOnce(new UserNotFoundError())
 
     const result = await sut.execute(httpRequest)
 
