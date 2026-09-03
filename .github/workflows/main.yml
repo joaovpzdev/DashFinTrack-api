@@ -74,5 +74,5 @@ jobs:
         uses: actions/checkout@v4
       - name: Deploy to production 
         run:
-          curl "${{ secrets.RENDER_DEPLOY_HOK_URL }}"
+          curl "${{ secrets.RENDER_DEPLOY_HOOK_URL }}"
       
