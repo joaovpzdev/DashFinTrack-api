@@ -18,6 +18,8 @@ jobs:
           uses: actions/setup-node@v2
           with:
             node-version: '24'
+        - name: Create .env.test file
+          run: echo "DATABASE_URL=\postgresql://root:samirabradinho@localhost:5433/dashfintrackapp_test?schema=public\" > .env.test
         - name: Install dependencies
           run: npm install
         - name: ESlint
