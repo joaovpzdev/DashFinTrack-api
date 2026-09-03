@@ -4,7 +4,7 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "test": "dotenv -e .env.test jest  --passWithNoTests --silent --detectOpenHandles --forceExit",
+    "test": "dotenv -e .env.test -- node --passWithNoTests  --runInBand --detectOpenHandles --forceExit",
     "test:watch": "jest --watch --passWithNoTests --silent",
     "test:coverage": "jest --coverage --passWithNoTests --silent",
     "postinstall": "npx prisma generate",
