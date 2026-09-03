@@ -225,4 +225,4 @@ The full OpenAPI specification is available in [`docs/swagger.json`](./docs/swag
 
 ## Author
 
-Developed by **João Victor Paixão Zolim** ([@joaovpzdev](https://github.com/joaovpzdev)).
+Developed by **João Victor Paixão Zolim** ([@joaovpzdev](https://github.com/joaovpzdev))
