@@ -11,21 +11,44 @@ on:
 jobs:
     check:
         runs-on: ubuntu-latest
+
+        services:
+          postgres:
+            image: postgres:15
+            env:
+              POSTGRES_USER: root
+              POSTGRES_PASSWORD: samirabradinho
+              POSTGRES_DB: dashfintrackapp_test
+            ports:
+              - 5433:5432
+            options: >-
+              --health-cmd pg_isready
+              --health-interval 10s
+              --health-timeout 5s
+              --health-retries 5
+
         steps:
         - name: Checkout code
-          uses: actions/checkout@v2
-        - name: Use Node.
-          uses: actions/setup-node@v2
+          uses: actions/checkout@v4
+
+        - name: Use Node
+          uses: actions/setup-node@v4
           with:
             node-version: '24'
+
         - name: Create .env.test file
-          run: echo "DATABASE_URL=postgresql://user:pass@localhost:5433/dashfintrackapp_test?schema=public" > .env.test
+          run: |
+            echo "PORT=3001" > .env.test
+            echo 'DATABASE_URL="postgresql://root:samirabradinho@localhost:5433/dashfintrackapp_test?schema=public"' >> .env.test
+
         - name: Install dependencies
           run: npm install
+
         - name: ESlint
           run: npm run eslint:check
+
         - name: Prettier
           run: npm run prettier:check
+
         - name: Test
           run: npm run test
-        
