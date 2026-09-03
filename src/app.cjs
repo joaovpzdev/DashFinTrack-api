@@ -13,10 +13,7 @@ app.use('/api/users', usersRouter)
 app.use('/api/transactions', transactionsRouter)
 
 const swaggerDocument = JSON.parse(
-  fs.readFileSync(
-    path.join(__dirname, '../docs/swagger.json'),
-    'utf-8',
-  ),
+  fs.readFileSync(path.join(__dirname, '../docs/swagger.json'), 'utf-8'),
 )
 
 app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument))
